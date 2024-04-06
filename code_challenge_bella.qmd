@@ -1,0 +1,39 @@
+---
+title: "code_challenge_bella"
+format: html
+editor: source
+---
+Note:
+*aoi_bps_models <- bps_aoi_atts$BPS_MODEL #subset ref_con to aoi aoi_ref_con <- subset(ref_con, Model_Code %in% aoi_bps_models)*
+
+## Code Challenge:
+
+##1. Load Data Into Environment
+>practice chart
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+
+ggplot(scls_aoi_attributes, aes(x=REL_PERCENT, y=LABEL)) + 
+  geom_bar(stat = "identity")
+```
+
+##2. Merge datasets
+```{r}
+merged_left <- left_join(bps_model_number_name, ref_con_modified, by = "Model_Code")
+
+```
+
+##3. Filter
+```{r}
+names_to_include <- c("Ozark-Ouachita Dry-Mesic
+Oak Forest", "Ozark-Ouachita Shortleaf Pine-Bluestem Woodland", "Ozark-Ouachita Shortleaf
+Pine-Oak Forest and
+Woodland")
+filtered_df <- filter(merged_left, BpS_Name %in% names_to_include)
+
+```
+
+
