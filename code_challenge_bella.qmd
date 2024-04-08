@@ -6,7 +6,7 @@ editor: source
 Note:
 *aoi_bps_models <- bps_aoi_atts$BPS_MODEL #subset ref_con to aoi aoi_ref_con <- subset(ref_con, Model_Code %in% aoi_bps_models)*
 
-## Code Challenge:
+# Code Challenge:
 
 ##1. Load Data Into Environment
 >practice chart
@@ -22,18 +22,45 @@ ggplot(scls_aoi_attributes, aes(x=REL_PERCENT, y=LABEL)) +
 
 ##2. Merge datasets
 ```{r}
-merged_left <- left_join(bps_model_number_name, ref_con_modified, by = "Model_Code")
+merged_names <- left_join(bps_model_number_name, ref_con_modified, by = "Model_Code")
+
+colnames(scls_aoi_attributes)[colnames(scls_aoi_attributes) == "VALUE"] <- "Var2"
+
+merged_variance <- merge(combine_raw, scls_aoi_attributes, by = "Var2")
+
+colnames(merged_names)[colnames(merged_names) == "Model_Code"] <- "BPS_MODEL"
+
+merged_names2 <- merge(merged_names, LF16_BPS_200, by = "BPS_MODEL")
+```
+
+> I had a mess of data in my environment after this, by creating the correct data through trial and error. I wish I had been more intentional in my naming because it made things more difficult leaving them with their original names, I would have to keep looking through the datasets to remember what I needed from them. 
+
+#practice charts:
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+
+ggplot(merged_variance, aes(x=REL_PERCENT, y=LABEL)) + 
+  geom_bar(stat = "identity")
+
+ggplot(merged_names, aes(x=BPS_MODEL, y= A)) +
+  geom_bar(stat= "identity")
 
 ```
 
 ##3. Filter
 ```{r}
-names_to_include <- c("Ozark-Ouachita Dry-Mesic
-Oak Forest", "Ozark-Ouachita Shortleaf Pine-Bluestem Woodland", "Ozark-Ouachita Shortleaf
-Pine-Oak Forest and
-Woodland")
-filtered_df <- filter(merged_left, BpS_Name %in% names_to_include)
+filtered_df2 <- filter(merged_names, BPS_MODEL == "13040_32_43_44_49" | BPS_MODEL == "15070_44" | BPS_MODEL == "13670_32_44")
 
 ```
 
+> This didn't work initially and I am not sure why... only filtered 1 name rather than all 3. Didn't merge correctly.
 
+>Tried to merge with LF16 but had the same issue
+
+> Ended up filtering by model code and that worked, didn't need to merge LF16 ?
+
+##4. Mutate? 
+*(Get percents)
+*(Get past vs present)
