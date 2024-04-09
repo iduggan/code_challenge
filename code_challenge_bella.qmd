@@ -9,6 +9,22 @@ Note:
 # Code Challenge:
 
 ##1. Load Data Into Environment
+
+```{r}
+bps_aoi_attributes <- read.csv(file.choose("bps_aoi_attributes.csv"))
+
+bps_model_number_names <- read.csv(file.choose("bps_model_number_names.csv"))
+
+combine_raw <- read.csv(file.choose("combine_raw.csv"))
+
+LF16_BPS_200 <- read.csv(file.choose("LF16_BPS_200.csv"))
+
+ref_con_modified <- read.csv(file.choose("ref_con_modified.csv"))
+
+scls_aoi_attributes <- read.csv(file.choose("scls_aoi_attributes.csv"))
+
+```
+
 >practice chart
 
 ```{r}
@@ -22,15 +38,15 @@ ggplot(scls_aoi_attributes, aes(x=REL_PERCENT, y=LABEL)) +
 
 ##2. Merge datasets
 ```{r}
-merged_names <- left_join(bps_model_number_name, ref_con_modified, by = "Model_Code")
+merged_modelcode <- left_join(bps_model_number_names, ref_con_modified, by = "Model_Code")
 
 colnames(scls_aoi_attributes)[colnames(scls_aoi_attributes) == "VALUE"] <- "Var2"
 
 merged_variance <- merge(combine_raw, scls_aoi_attributes, by = "Var2")
 
-colnames(merged_names)[colnames(merged_names) == "Model_Code"] <- "BPS_MODEL"
+colnames(merged_modelcode)[colnames(merged_modelcode) == "Model_Code"] <- "BPS_MODEL"
 
-merged_names2 <- merge(merged_names, LF16_BPS_200, by = "BPS_MODEL")
+merged_names2 <- merge(merged_modelcode, LF16_BPS_200, by = "BPS_MODEL")
 ```
 
 > I had a mess of data in my environment after this, by creating the correct data through trial and error. I wish I had been more intentional in my naming because it made things more difficult leaving them with their original names, I would have to keep looking through the datasets to remember what I needed from them. 
@@ -44,14 +60,14 @@ library(tidyverse)
 ggplot(merged_variance, aes(x=REL_PERCENT, y=LABEL)) + 
   geom_bar(stat = "identity")
 
-ggplot(merged_names, aes(x=BPS_MODEL, y= A)) +
+ggplot(merged_modelcode, aes(x=BPS_MODEL, y= A)) +
   geom_bar(stat= "identity")
 
 ```
 
 ##3. Filter
 ```{r}
-filtered_df2 <- filter(merged_names, BPS_MODEL == "13040_32_43_44_49" | BPS_MODEL == "15070_44" | BPS_MODEL == "13670_32_44")
+filtered_df2 <- filter(merged_modelcode, BPS_MODEL == "13040_32_43_44_49" | BPS_MODEL == "15070_44" | BPS_MODEL == "13670_32_44")
 
 ```
 
