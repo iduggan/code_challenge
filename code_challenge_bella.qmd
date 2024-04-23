@@ -68,9 +68,9 @@ colnames(bps_aoi_attributes)[colnames(bps_aoi_attributes) == "VALUE"] <- "Var1" 
 
 colnames(LF16_BPS_200)[colnames(LF16_BPS_200) == "VALUE"] <- "Var1" #similarly wanted to change to Var1 to possibly filter/merge with merged_variance
 
-merged_LF16_attr <- merge(bps_aoi_attributes, LF16_BPS_200, by = "Var1")
+merged_LF16_attr <- merge(bps_aoi_attributes, LF16_BPS_200, by = "Var1") 
 
-filtered_LF16 <- filter(merged_LF16_attr, BPS_MODEL.x == "13040_32_43_44_49" |  BPS_MODEL.x == "15070_44" | BPS_MODEL.x == "13670_32_44")
+filtered_LF16 <- filter(merged_LF16_attr, BPS_MODEL.x == "13040_32_43_44_49" |  BPS_MODEL.x == "15070_44" | BPS_MODEL.x == "13670_32_44") #ended up with 3 rows 
 
 ```
 
@@ -134,6 +134,7 @@ past_and_present <- cross_join(filtered_pivot, filtered_combine) %>%
                                  scl_value = Var2,
                                  bps_name = BpS_Name) %>%
                           clean_names() 
+
 ```
 
 ## Make Chart
@@ -148,8 +149,23 @@ library(tidyr)
 
 
 #Reflection:
-i. I'm 
 
 ii. From this challenge my comfortability with data wrangling has improved tremendously. At the start of this challenge I was still rusty/ not completely comfortable and having to ask chatgpt questions about inputting data and merging datasets. Now I feel that if we were given a second code challenge, with the information I've learned from this first, I might be able to work through things more efficiently.
 
 iii. I think I did a good job at reflecting/ note taking as I went along and struggled. I made notes for myself so if I took a break and came back another day, or a few days later, I still knew what I had going on and needed to work with. I think if I were working with a partner on something like this that form of note taking would be helpful and make things easier for two people. Similarly, I could definitely improve on making comments within code, that's something I need to get in the habit of doing.
+
+##Annotations:
+
+> merge: merge is used to merge 2 datasets together by a specified column.
+
+>pivot_longer: apart of "tidyr," used to shift datasets from a wide to long format.
+
+>filter: used to filtered datasets by a specific attribute within a column.
+
+>colnames: used to rename columns.
+
+>left_join: used to join the left side of one dataset to all the matching attributes on the right of another dataset.
+
+>group_by: used in conjunction with "mutate()" or other functions of the "dplyr" package,enabling you to group one or more variables in a dataset and manipulate them by their group.
+
+>unite: concentrates values in R by tidying and uniting messy columns.
